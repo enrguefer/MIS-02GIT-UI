@@ -49,24 +49,25 @@ class Contacts extends React.Component {
 
     async addContact(contact){
 
-        let allContacts = await ContactsApi.getAllContacts()
-            .then( 
-                (contacts) => {
-                    return contacts
-                }
-                ,(error) => {
-                    return this.setState({
-                        errorInfo: "Problem with connection to server"
-                    })
-                }
-            );
-
-        this.setState(prevState => {
-            const contacts = prevState.contacts;
-                return ({
-                    contacts: allContacts
+        try{
+            await ContactsApi.postContact(contact)
+        }catch(err){
+            this.setState({
+                errorInfo: "Failed when inserting the new contact!"
             })
-        })
+        }
+
+        try{
+            let allContacts = await ContactsApi.getAllContacts();
+            this.setState({
+                    contacts: allContacts
+                }
+            )
+        }catch (err){
+            this.setState({
+                errorInfo: "Problem with connection to server"
+            })
+        }
     }
 
     handleCancel(name, contact) {
@@ -106,7 +107,6 @@ class Contacts extends React.Component {
     }
 
     async handleDelete(contact){
-        console.log("handleDelete: "+contact)
         try{
             await ContactsApi.deleteContact(contact.id);
             let allContacts = await ContactsApi.getAllContacts();

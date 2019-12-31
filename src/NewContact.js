@@ -19,27 +19,10 @@ class NewContact extends React.Component {
     }
 
     clickAdd(){
-        
-        ContactsApi.postContact(this.state)
-            .then( 
-                (result) => {
-                    if(result.status === 201){
-                        this.props.onAddContact(this.state);
-                        this.setState({
-                            id:'', name: '', phone: ''
-                        })
-                    }else{
-                        this.setState({
-                            errorInfo: "Failed when inserting the new contact!"
-                        })
-                    }
-                }
-                ,(error) => {
-                    this.setState({
-                        errorInfo: "Failed when inserting the new contact!"
-                    })
-                }
-            );
+        this.props.onAddContact(this.state);
+        this.setState({
+            id:'', name: '', phone: ''
+        })
     }
 
     render(){
