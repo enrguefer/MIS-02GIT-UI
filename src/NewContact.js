@@ -1,4 +1,5 @@
 import React from 'react';
+import ContactsApi from './ContactsApi.js'
 
 class NewContact extends React.Component {
 
@@ -18,10 +19,26 @@ class NewContact extends React.Component {
     }
 
     clickAdd(){
+        console.log("STATE 1: ", this.state)
         this.props.onAddContact(this.state);
+        console.log("STATE 2: ", this.state)
+        ContactsApi.postContact(this.state)
+            .then( 
+                (result) => {
+                    console.log(result)
+                }
+                ,(error) => {
+                    this.setState({
+                        errorInfo: "Failed when inserting the new contact!"
+                    })
+                }
+            );
+        console.log("STATE 3: ", this.state)
         this.setState({
             name: '', phone: ''
         });
+        console.log("STATE 4: ", this.state)
+        
     }
 
     render(){
