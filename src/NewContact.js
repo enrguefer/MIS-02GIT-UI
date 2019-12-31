@@ -19,13 +19,16 @@ class NewContact extends React.Component {
     }
 
     clickAdd(){
-        console.log("STATE 1: ", this.state)
+        
         this.props.onAddContact(this.state);
-        console.log("STATE 2: ", this.state)
+        
         ContactsApi.postContact(this.state)
             .then( 
                 (result) => {
                     console.log(result)
+                    this.setState({
+                        name: '', phone: ''
+                    });
                 }
                 ,(error) => {
                     this.setState({
@@ -33,11 +36,8 @@ class NewContact extends React.Component {
                     })
                 }
             );
-        console.log("STATE 3: ", this.state)
-        this.setState({
-            name: '', phone: ''
-        });
-        console.log("STATE 4: ", this.state)
+        
+        
         
     }
 

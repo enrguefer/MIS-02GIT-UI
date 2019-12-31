@@ -99,9 +99,23 @@ class Contacts extends React.Component {
     }
 
     handleDelete(contact){
-        this.setState( prevState => ({
-            contacts: prevState.contacts.filter(c => c.name !== contact.name)
-        }));
+        console.log("handleDelete: "+contact)
+        ContactsApi.deleteContact(contact.id)
+            .then( 
+                (result) => {
+                    
+                    console.log(result)
+                    
+                    this.setState( prevState => ({
+                        contacts: prevState.contacts.filter(c => c.name !== contact.name)
+                    }));
+                }
+                ,(error) => {
+                    this.setState({
+                        errorInfo: "Failed when deleting the contact!"
+                    })
+                }
+            );
     }
 
     render(){
@@ -122,7 +136,7 @@ class Contacts extends React.Component {
                             ! this.state.isEditing[contact.name] ?
                             <Contact key={contact.name} contact={contact} onEdit={this.handleEdit} onDelete={this.handleDelete}/>
                             :
-                            <EditContact key={contact.name} contact={this.state.isEditing[contact.name]} 
+                            <EditContact key={contact.id} contact={this.state.isEditing[contact.name]} 
                                 onCancel={this.handleCancel.bind(this, contact.name)}
                                 onChange={this.handleChange.bind(this, contact.name)}
                                 onSave={this.handleSave.bind(this, contact.name)}></EditContact>

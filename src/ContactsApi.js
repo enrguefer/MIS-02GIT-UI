@@ -18,8 +18,6 @@ class ContactsApi{
     }
 
     static postContact(newContact){
-        const headers = this.requestHeader();
-        console.log("newContact", newContact)
         const request = new Request(ContactsApi.API_BASE_URL+ "/contacts", {
             method: 'POST',
             headers: {
@@ -30,6 +28,20 @@ class ContactsApi{
                 name: newContact.name,
                 phone: newContact.phone
               })
+        });
+
+        return fetch(request).then(response => {
+            return response;
+        }).catch(error => {
+            return error;
+        });
+    }
+
+    static deleteContact(id){
+        const headers = this.requestHeader();
+        const request = new Request(ContactsApi.API_BASE_URL+ "/contact/"+id, {
+            method: 'DELETE',
+            headers: headers
         });
 
         return fetch(request).then(response => {
