@@ -108,7 +108,7 @@ class Contacts extends React.Component {
         return(
             <div>
                 <Alert message={this.state.errorInfo} onClose={this.handleCloseError}/>
-                <table class="table">
+                <table className="table">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -116,16 +116,19 @@ class Contacts extends React.Component {
                             <th>&nbsp;</th>
                         </tr>
                     </thead>
-                    <NewContact onAddContact={this.onAddContact}></NewContact>
-                    {this.state.contacts.map((contact) => 
-                        ! this.state.isEditing[contact.name] ?
-                        <Contact key={contact.name} contact={contact} onEdit={this.handleEdit} onDelete={this.handleDelete}/>
-                        :
-                        <EditContact key={contact.name} contact={this.state.isEditing[contact.name]} 
-                            onCancel={this.handleCancel.bind(this, contact.name)}
-                            onChange={this.handleChange.bind(this, contact.name)}
-                            onSave={this.handleSave.bind(this, contact.name)}></EditContact>
-                    )}
+                    <tbody>
+                        <NewContact onAddContact={this.onAddContact}></NewContact>
+                        {this.state.contacts.map((contact) => 
+                            ! this.state.isEditing[contact.name] ?
+                            <Contact key={contact.name} contact={contact} onEdit={this.handleEdit} onDelete={this.handleDelete}/>
+                            :
+                            <EditContact key={contact.name} contact={this.state.isEditing[contact.name]} 
+                                onCancel={this.handleCancel.bind(this, contact.name)}
+                                onChange={this.handleChange.bind(this, contact.name)}
+                                onSave={this.handleSave.bind(this, contact.name)}></EditContact>
+                        )}
+                    </tbody>
+                    
                 </table>                
             </div>
 
