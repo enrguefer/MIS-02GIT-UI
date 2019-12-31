@@ -5,7 +5,7 @@ class NewContact extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {name: '', phone: ''};
+        this.state = {id:'', name: '', phone: ''};
         this.changeContact = this.changeContact.bind(this);
         this.clickAdd = this.clickAdd.bind(this);
     }
@@ -20,15 +20,19 @@ class NewContact extends React.Component {
 
     clickAdd(){
         
-        this.props.onAddContact(this.state);
-        
         ContactsApi.postContact(this.state)
             .then( 
                 (result) => {
-                    console.log(result)
-                    this.setState({
-                        name: '', phone: ''
-                    });
+                    if(result.status === 201){
+                        this.props.onAddContact(this.state);
+                        this.setState({
+                            id:'', name: '', phone: ''
+                        })
+                    }else{
+                        this.setState({
+                            errorInfo: "Failed when inserting the new contact!"
+                        })
+                    }
                 }
                 ,(error) => {
                     this.setState({
@@ -36,9 +40,6 @@ class NewContact extends React.Component {
                     })
                 }
             );
-        
-        
-        
     }
 
     render(){
