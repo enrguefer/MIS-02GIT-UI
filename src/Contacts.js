@@ -47,17 +47,24 @@ class Contacts extends React.Component {
         });
     }
 
-    addContact(contact){
+    async addContact(contact){
+
+        let allContacts = await ContactsApi.getAllContacts()
+            .then( 
+                (contacts) => {
+                    return contacts
+                }
+                ,(error) => {
+                    return this.setState({
+                        errorInfo: "Problem with connection to server"
+                    })
+                }
+            );
+
         this.setState(prevState => {
             const contacts = prevState.contacts;
-            if(!contacts.find(c => c.name === contact.name)){
                 return ({
-                    contacts: [...prevState.contacts, contact]
-                })
-            }
-
-            return({
-                errorInfo: 'Contact already exists!'
+                    contacts: allContacts
             })
         })
     }
@@ -103,9 +110,6 @@ class Contacts extends React.Component {
         ContactsApi.deleteContact(contact.id)
             .then( 
                 (result) => {
-                    
-                    console.log(result)
-                    
                     this.setState( prevState => ({
                         contacts: prevState.contacts.filter(c => c.name !== contact.name)
                     }));
