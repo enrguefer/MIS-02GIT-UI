@@ -105,21 +105,20 @@ class Contacts extends React.Component {
         });
     }
 
-    handleDelete(contact){
+    async handleDelete(contact){
         console.log("handleDelete: "+contact)
-        ContactsApi.deleteContact(contact.id)
-            .then( 
-                (result) => {
-                    this.setState( prevState => ({
-                        contacts: prevState.contacts.filter(c => c.name !== contact.name)
-                    }));
+        try{
+            await ContactsApi.deleteContact(contact.id);
+            let allContacts = await ContactsApi.getAllContacts();
+            this.setState({
+                    contacts: allContacts
                 }
-                ,(error) => {
-                    this.setState({
-                        errorInfo: "Failed when deleting the contact!"
-                    })
-                }
-            );
+            )
+        }catch (err){
+            this.setState({
+                errorInfo: "Failed when deleting the contact!"
+            })
+        }
     }
 
     render(){
