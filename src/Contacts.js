@@ -48,25 +48,33 @@ class Contacts extends React.Component {
     }
 
     async addContact(contact){
+        console.log(contact)
 
-        try{
-            await ContactsApi.postContact(contact)
-        }catch(err){
+        if(contact.name==="" || contact.phone===""){
             this.setState({
-                errorInfo: "Failed when inserting the new contact!"
+                errorInfo: "You must write all the contact fields"
             })
-        }
-
-        try{
-            let allContacts = await ContactsApi.getAllContacts();
-            this.setState({
-                    contacts: allContacts
-                }
-            )
-        }catch (err){
-            this.setState({
-                errorInfo: "Problem with connection to server"
-            })
+        
+        }else{
+            try{
+                await ContactsApi.postContact(contact)
+            }catch(err){
+                this.setState({
+                    errorInfo: "Failed when inserting the new contact!"
+                })
+            }
+    
+            try{
+                let allContacts = await ContactsApi.getAllContacts();
+                this.setState({
+                        contacts: allContacts
+                    }
+                )
+            }catch (err){
+                this.setState({
+                    errorInfo: "Problem with connection to server"
+                })
+            }
         }
     }
 
