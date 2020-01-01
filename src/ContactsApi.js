@@ -37,6 +37,26 @@ class ContactsApi{
         });
     }
 
+    static putContact(updateContact){
+        const request = new Request(ContactsApi.API_BASE_URL+ "/contact/"+updateContact.id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: updateContact.name,
+                phone: updateContact.phone
+              })
+        });
+
+        return fetch(request).then(response => {
+            return response;
+        }).catch(error => {
+            return error;
+        });
+    }
+
     static deleteContact(id){
         const headers = this.requestHeader();
         const request = new Request(ContactsApi.API_BASE_URL+ "/contact/"+id, {

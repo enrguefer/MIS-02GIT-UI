@@ -86,24 +86,32 @@ class Contacts extends React.Component {
         }))
     }
 
-    handleSave(name, contact){
-        this.setState(prevState => {
-            const isEditing = Object.assign({}, prevState.isEditing);
+    async handleSave(name, contact){
+
+        try{
+            await ContactsApi.putContact(contact)
+            const isEditing = Object.assign({}, this.state.isEditing);
             delete isEditing[name];
+            this.setState({
+                isEditing: isEditing
+            })
+        }catch(err){
+            this.setState({
+                errorInfo: "Failed when updating the contact!"
+            })
+        }
 
-            if(name === contact.name){
-                const contacts = prevState.contacts;
-                const pos = contacts.findIndex( c => c.name === contact.name);
-                return {
-                    contacts: [...contacts.slice(0, pos), Object.assign({}, contact), ...contacts.slice(pos+1)],
-                    isEditing: isEditing
+        try{
+            let allContacts = await ContactsApi.getAllContacts();
+            this.setState({
+                    contacts: allContacts
                 }
-            }
-
-            return{
-                errorInfo: "Can not edit name"
-            }
-        });
+            )
+        }catch (err){
+            this.setState({
+                errorInfo: "Problem with connection to server"
+            })
+        }
     }
 
     async handleDelete(contact){
