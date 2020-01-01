@@ -5,3 +5,9 @@ install:
   - npm install
 script:
   - npm test
+deploy:
+  provider: heroku
+  api_key:
+    secure: "f22d9145-bf9f-4d2d-bb13-45efce357a8b"
+  app: mis-02git-ui
+  on: master
