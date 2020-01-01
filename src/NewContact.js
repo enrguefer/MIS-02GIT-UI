@@ -1,5 +1,4 @@
 import React from 'react';
-import ContactsApi from './ContactsApi.js'
 
 class NewContact extends React.Component {
 
